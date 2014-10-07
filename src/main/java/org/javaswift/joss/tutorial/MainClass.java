@@ -1,5 +1,7 @@
 package org.javaswift.joss.tutorial;
 
+import org.javaswift.joss.*;
+import org.javaswift.joss.client.core.TempURL;
 import org.javaswift.joss.client.factory.AccountFactory;
 import org.javaswift.joss.model.Account;
 import org.javaswift.joss.model.Container;
@@ -30,19 +32,29 @@ public class MainClass {
                 .setUsername(credentials.getString("username"))
                 .setPassword(credentials.getString("password"))
                 .setAuthUrl(credentials.getString("auth_url"))
-                .setMock(true)
+                .setMock(false)
                 .createAccount();
 
         // Add content
+      
         Container myContainer = account.getContainer("MyContainer");
         if (!myContainer.exists()) {
             myContainer.create();
             myContainer.makePublic();
-        }
-
+        } else {
+			System.out.println("the container already exists");
+		}
+        
+        
         StoredObject someFile = myContainer.getObject("cloud-computing.jpg");
         someFile.uploadObject(new File("src/main/resources/Cloud-Computing.jpg"));
         System.out.println(someFile.getPublicURL());
+        
+      
+//        StoredObject myTempURL = myContainer.getTempGetUrl(long 3000);
+//       	System.out.println( "the temporary URL is" + myTempURL);
+//        tempURL =  TempURL;
+       
 
         Map<String, Object> metadata = new HashMap<String, Object>();
         metadata.put("Information", "Almost, but not quite, entirely unlike tea.");
